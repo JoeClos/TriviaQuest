@@ -57,7 +57,7 @@ const TriviaCard: React.FC<TriviaCardProps> = ({
         })}
       </div>
       {feedback && (
-        <p className={`mt-4 ${feedback.startsWith('Correct') ? 'text-green-500 font-bold' : 'text-purple-500 font-bold'}`}>
+        <p className={`mt-4 ${feedback.startsWith('Correct') ? 'text-green-500 font-bold' : 'text-purple font-bold'}`}>
           {feedback}
         </p>
       )}

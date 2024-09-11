@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import TriviaCard from '../components/TriviaCard';
 import CategoryDropdown from '../components/CategoryDropdown';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { Category } from '../types/category';
 
 interface TriviaQuestion {
   category: string;
@@ -11,11 +12,6 @@ interface TriviaQuestion {
   correct_answer: string;
   incorrect_answers: string[];
 }
-
-// interface Category {
-//   id: number;
-//   name: string;
-// }
 
 const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCatchError }) => {
   const [trivia, setTrivia] = useState<TriviaQuestion[]>([]);
@@ -82,7 +78,7 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
       if (answer === correctAnswer) {
         setFeedback('Correct! 🎉');
       } else {
-        setFeedback(`The correct answer is: ${correctAnswer}`);
+        setFeedback(`Wrong! The correct answer is: ${correctAnswer}`);
       }
       setIsAnswered(true);
     }

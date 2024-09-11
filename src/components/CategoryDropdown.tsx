@@ -1,7 +1,4 @@
-interface Category {
-    id: number;
-    name: string;
-}
+import { Category } from "../types/category";
 
 interface CategoryDropdownProps {
     categories: Category[];
@@ -12,7 +9,7 @@ interface CategoryDropdownProps {
 const CategoryDropdown: React.FC<CategoryDropdownProps> = ({ categories, selectedCategory, onSelectCategory }) => {
     return (
         <div className="mb-4">
-            <label htmlFor="category" className="mr-2 font-bold text-white">Select Category:</label>
+            {/* <label htmlFor="category" className="mr-2 font-bold text-white">Select Category:</label> */}
             <select
                 id="category"
                 className="border border-gray-300 rounded p-2"
