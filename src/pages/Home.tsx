@@ -150,7 +150,7 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
               )}
             </div>
           ) : (
-            <p className='text-white'>There are no questions for the category selected.</p>
+            <p className='text-white'>There are no more questions for the category selected.</p>
           )
         ) : (
           <p className='text-white'>No questions available. Choose first a category.</p>
