@@ -3,6 +3,7 @@ import TriviaCard from '../components/TriviaCard';
 import CategoryDropdown from '../components/CategoryDropdown';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { Category } from '../types/category';
+import { fetchCategories, fetchTriviaQuestions } from '../api/triviaApi';
 
 interface TriviaQuestion {
   category: string;
@@ -24,45 +25,35 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
 
   // Fetch categories
   useEffect(() => {
-    const fetchCategories = async () => {
+    const getCategories = async () => {
       try {
-        const response = await fetch('https://opentdb.com/api_category.php');
-        const data = await response.json();
-        setCategories(data.trivia_categories);
+        const categories = await fetchCategories();
+        setCategories(categories);
       } catch (error) {
         handleCatchError(error as Error);
       }
     };
-    fetchCategories();
+
+    getCategories();
   }, [handleCatchError]);
 
   // Fetch trivia based on selected category
   useEffect(() => {
     if (!selectedCategory) return;
 
-    const fetchTrivia = async () => {
+    const getTriviaQuestions = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple&category=${selectedCategory}`);
-        const data = await response.json();
-
-        if (data && data.results && data.results.length > 0) {
-          setTrivia(data.results as TriviaQuestion[]);
-        } else {
-          throw new Error('No trivia questions available');
-        }
-
-        setTimeout(() => {
-          setLoading(false); // Stop loading after 5 seconds
-        }, 5000);
-
+        const questions = await fetchTriviaQuestions(selectedCategory);  // Using the API call
+        setTrivia(questions);
+        setLoading(false);
       } catch (error) {
         handleCatchError(error as Error);
         setLoading(false);
       }
     };
 
-    fetchTrivia();
+    getTriviaQuestions();
   }, [selectedCategory, handleCatchError]);
 
   const decodeHtml = (html: string) => {
@@ -97,10 +88,10 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
       <div className="container mx-auto p-4 flex flex-col items-center justify-center">
         {/* Category Dropdown */}
         <CategoryDropdown
-        categories={categories}
-        selectedCategory={selectedCategory}
-        onSelectCategory={setSelectedCategory}
-      />
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
+        />
 
         {/* Trivia Questions */}
         {loading ? (
