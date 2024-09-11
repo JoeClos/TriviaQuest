@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  justify-content: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background-image: url('/assets/skyBg.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+/* src/index.css or a specific CSS module */
+/* .bg-custom {
+  background-image: url('/assets/bg.jpg');
+  background-size: cover;
+  background-position: center;
+} */
+ 
