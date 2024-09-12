@@ -134,13 +134,18 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
         {/* Score Display */}
         {selectedCategory && (
           <div className=" mb-4 bg-white rounded shadow-md flex flex-row items-center justify-around ">
-            <div className='m-4'>
-              <p>Score: {score}/{totalQuestions}</p>
+            <div className="sm:text-l md:text-xl font-bold">
+              <p>
+                Question {currentQuestionIndex + 1} of {totalQuestions}
+              </p>
+            </div>
+            <div className='m-4 sm:text-l md:text-xl font-bold'>
+              <p>Your score: {score}/{totalQuestions}</p>
             </div>
             {/* Mute/Unmute Button */}
             <div>
               <button
-                className=" px-4 py-2 text-2xl"
+                className="px-4 py-2 text-2xl"
                 onClick={toggleMute}
               >
                 {isMuted ? <IoVolumeMute /> : <VscUnmute />}
@@ -175,11 +180,11 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
             )}
             {/* If it's the last question, show the feedback and message */}
             {answeredQuestions === totalQuestions && (
-              <p className="uppercase font-bold mt-4">No more questions left in this category.</p>
+              <p className="uppercase font-bold mt-4">No more questions left for this category.</p>
             )}
           </div>
         ) : (
-          <p className="uppercase font-bold mt-4">{feedback || "No questions available. Choose a category first."}</p>
+          <p className="uppercase font-bold mt-4 text-white">{feedback}</p>
         )}
       </div>
 
