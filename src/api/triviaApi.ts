@@ -13,11 +13,14 @@ export const fetchCategories = async () => {
   };
   
   // Fetch trivia questions based on the selected category
-  export const fetchTriviaQuestions = async (category: number) => {
+  export const fetchTriviaQuestions = async (categoryId: number, numberOfQuestions: number = 20) => {
     try {
-      const response = await fetch(`https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple&category=${category}`);
+      const response = await fetch(`https://opentdb.com/api.php?amount=${numberOfQuestions}&category=${categoryId}`);
       const data = await response.json();
-      return data.results;
+      if (data.results && data.results.length > 0) {
+        return data.results; // Return questions
+      }
+      return [];
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       throw new Error('Failed to fetch trivia questions');

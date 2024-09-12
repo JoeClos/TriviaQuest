@@ -50,34 +50,68 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
   }, [handleCatchError]);
 
   // Fetch trivia based on selected category
+  // useEffect(() => {
+  //   if (selectedCategory === null) return;
+
+  //   const getTriviaQuestions = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const questions = await fetchTriviaQuestions(selectedCategory); // Using the API call
+  //       if (questions.length <= 0) {
+  //         setTrivia([]);
+  //         setTotalQuestions(0);
+  //         setAnsweredQuestions(0);
+  //         setScore(0);
+  //       } else {
+  //         setTrivia(questions);
+  //         setTotalQuestions(questions.length);
+  //         setAnsweredQuestions(0); // Reset answered questions count
+  //         setCurrentQuestionIndex(0); // Reset question index
+  //         setScore(0);
+  //       }
+  //       setLoading(false);
+  //     } catch (error) {
+  //       handleCatchError(error as Error);
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   getTriviaQuestions();
+  // }, [selectedCategory, handleCatchError]);
+
   useEffect(() => {
     if (selectedCategory === null) return;
 
     const getTriviaQuestions = async () => {
       setLoading(true);
       try {
-        const questions = await fetchTriviaQuestions(selectedCategory); // Using the API call
-        if (questions.length <= 0) {
+        const questions = await fetchTriviaQuestions(selectedCategory, 20); // Request up to 20 questions
+    
+        // If the returned questions are fewer than 20, handle it gracefully
+        if (!questions || questions.length === 0) {
           setTrivia([]);
           setTotalQuestions(0);
-          setAnsweredQuestions(0);
-          setScore(0);
+          setFeedback("No questions available for this category. Please choose another category.");
         } else {
           setTrivia(questions);
-          setTotalQuestions(questions.length);
+          setTotalQuestions(questions.length); // Adjust total questions based on actual returned number
           setAnsweredQuestions(0); // Reset answered questions count
           setCurrentQuestionIndex(0); // Reset question index
           setScore(0);
+          setFeedback(null); // Clear any previous feedback
         }
-        setLoading(false);
       } catch (error) {
         handleCatchError(error as Error);
+        setFeedback("Something went wrong while fetching questions. Please try again later.");
+      } finally {
         setLoading(false);
       }
     };
+    
 
     getTriviaQuestions();
   }, [selectedCategory, handleCatchError]);
+
 
   const decodeHtml = (html: string) => {
     const txt = document.createElement('textarea');
@@ -188,8 +222,9 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
           )}
         </div>
       ) : (
-        <p className="uppercase font-bold">No questions available. Choose a category first.</p>
-      )}
+        <p className="uppercase font-bold mt-4">{feedback || "No questions available. Choose a category first."}</p>
+)}
+    
     </div>
   );
 };
