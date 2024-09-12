@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 
 interface TriviaCardProps {
@@ -37,17 +36,14 @@ const TriviaCard: React.FC<TriviaCardProps> = ({
           return (
             <button
               key={index}
-              className={`px-4 py-2 rounded w-full ${
-                disabled
+              className={`px-4 py-2 rounded w-full ${disabled
                   ? isCorrect
                     ? 'bg-green-500 text-white' // Highlight correct answer
                     : isSelected
-                    ? 'bg-red-500 text-white' // Highlight selected wrong answer
-                    : 'bg-gray-400 text-gray-700' // Inactive options
-                  : isSelected
-                  ? 'bg-blue-500 text-white' // Highlight selected option when active
-                  : 'bg-midnight-300 text-white'
-              }`}
+                      ? 'bg-red-500 text-white' // Highlight selected wrong answer
+                      : 'bg-gray-400 text-gray-700' // Inactive options
+                  : 'bg-midnight-300 text-white' // Default option style for active state
+                }`}
               onClick={() => handleOptionClick(option)}
               disabled={disabled}
             >

@@ -114,75 +114,72 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
   const currentQuestion = trivia[currentQuestionIndex] || null;
 
   return (
-    <div className="container mx-auto p-4 flex flex-col items-center justify-center gap-3">
+    <div className="container mx-auto p-4 flex flex-col items-center justify-center">
       {/* Category Dropdown */}
-      <CategoryDropdown
-        categories={categories}
-        selectedCategory={selectedCategory}
-        onSelectCategory={(categoryId) => {
-          setSelectedCategory(categoryId);
-          setTrivia([]); // Clear trivia data when category changes
-          setTotalQuestions(0); // Reset total questions
-          setAnsweredQuestions(0); // Reset answered questions
-          setCurrentQuestionIndex(0); // Reset question index
-          setIsAnswered(false); // Reset answer state
-          setFeedback(null); // Clear feedback
-          setScore(0);
-        }}
-      />
-
-      {/* Score Display */}
-      {selectedCategory && (
-        <div className="bg-white p-4 rounded shadow-md flex flex-row items-center justify-center">
-          <div className="mb-4">
-            <p>Score: {score}/{totalQuestions}</p>
-          </div>
-
-          {/* Mute/Unmute Button */}
-          <button
-            className="mb-4 px-4 py-2 text-2xl"
-            onClick={toggleMute}
-          >
-            {isMuted ? <IoVolumeMute /> : <VscUnmute />}
-          </button>
-        </div>
-      )}
-
-      {/* Trivia Questions */}
-      {loading ? (
-        <LoadingSpinner />
-      ) : totalQuestions > 0 ? (
-        <div>
-          {/* Display the current trivia question card */}
-          <TriviaCard
-            question={`${currentQuestionIndex + 1}. ${decodeHtml(currentQuestion!.question)}`}
-            options={[...currentQuestion!.incorrect_answers, currentQuestion!.correct_answer]
-              .map(decodeHtml)
-              .sort()}
-            onAnswer={handleAnswer}
-            feedback={feedback}
-            correctAnswer={decodeHtml(currentQuestion!.correct_answer)}
-            disabled={isAnswered}
-          />
-
-          {/* Show the "Next Question" button if more questions are left */}
-          {isAnswered && currentQuestionIndex < totalQuestions - 1 && (
+      <div className="w-full max-w-lg">
+        <CategoryDropdown
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onSelectCategory={(categoryId) => {
+            setSelectedCategory(categoryId);
+            setTrivia([]); // Clear trivia data when category changes
+            setTotalQuestions(0); // Reset total questions
+            setAnsweredQuestions(0); // Reset answered questions
+            setCurrentQuestionIndex(0); // Reset question index
+            setIsAnswered(false); // Reset answer state
+            setFeedback(null); // Clear feedback
+            setScore(0);
+          }}
+        />
+        {/* Score Display */}
+        {selectedCategory && (
+          <div className=" mb-4 bg-white rounded shadow-md flex flex-row items-center justify-around ">
+            <div className="mb-4">
+              <p>Score: {score}/{totalQuestions}</p>
+            </div>
+            {/* Mute/Unmute Button */}
             <button
-              className="mt-4 bg-midnight-100 text-silver px-4 py-2 rounded text-xs font-medium uppercase shadow-lg transition duration-150 ease-in-out hover:bg-bermuda hover:text-midnight-100 focus:outline-none active:bg-midnight-200"
-              onClick={goToNextQuestion}
+              className="mb-4 px-4 py-2 text-2xl"
+              onClick={toggleMute}
             >
-              Next Question
+              {isMuted ? <IoVolumeMute /> : <VscUnmute />}
             </button>
-          )}
-
-          {/* If it's the last question, show the feedback and message */}
-          {answeredQuestions === totalQuestions && (
-            <p className="uppercase font-bold mt-4">No more questions left in this category.</p>
-          )}
-        </div>
-      ) : (
-        <p className="uppercase font-bold mt-4">{feedback || "No questions available. Choose a category first."}</p>
-      )}
+          </div>
+        )}
+        {/* Trivia Questions */}
+        {loading ? (
+          <LoadingSpinner />
+        ) : totalQuestions > 0 ? (
+          <div>
+            {/* Display the current trivia question card */}
+            <TriviaCard
+              question={`${currentQuestionIndex + 1}. ${decodeHtml(currentQuestion!.question)}`}
+              options={[...currentQuestion!.incorrect_answers, currentQuestion!.correct_answer]
+                .map(decodeHtml)
+                .sort()}
+              onAnswer={handleAnswer}
+              feedback={feedback}
+              correctAnswer={decodeHtml(currentQuestion!.correct_answer)}
+              disabled={isAnswered}
+            />
+            {/* Show the "Next Question" button if more questions are left */}
+            {isAnswered && currentQuestionIndex < totalQuestions - 1 && (
+              <button
+                className="mt-4 bg-midnight-100 text-silver px-4 py-2 rounded text-xs font-medium uppercase shadow-lg transition duration-150 ease-in-out hover:bg-bermuda hover:text-midnight-100 focus:outline-none active:bg-midnight-200"
+                onClick={goToNextQuestion}
+              >
+                Next Question
+              </button>
+            )}
+            {/* If it's the last question, show the feedback and message */}
+            {answeredQuestions === totalQuestions && (
+              <p className="uppercase font-bold mt-4">No more questions left in this category.</p>
+            )}
+          </div>
+        ) : (
+          <p className="uppercase font-bold mt-4">{feedback || "No questions available. Choose a category first."}</p>
+        )}
+      </div>
 
     </div>
   );
