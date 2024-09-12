@@ -6,17 +6,9 @@ import { Category } from '../types/category';
 import { fetchCategories, fetchTriviaQuestions } from '../api/triviaApi';
 import useSound from '../hooks/useSound';
 import { IoVolumeMute } from "react-icons/io5";
-import { VscUnmute } from 'react-icons/vsc'
+import { VscUnmute } from 'react-icons/vsc';
+import { TriviaQuestion } from '../types/question';
 
-
-interface TriviaQuestion {
-  category: string;
-  type: string;
-  difficulty: string;
-  question: string;
-  correct_answer: string;
-  incorrect_answers: string[];
-}
 
 const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCatchError }) => {
   const [trivia, setTrivia] = useState<TriviaQuestion[]>([]);
@@ -48,36 +40,6 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
 
     getCategories();
   }, [handleCatchError]);
-
-  // Fetch trivia based on selected category
-  // useEffect(() => {
-  //   if (selectedCategory === null) return;
-
-  //   const getTriviaQuestions = async () => {
-  //     setLoading(true);
-  //     try {
-  //       const questions = await fetchTriviaQuestions(selectedCategory); // Using the API call
-  //       if (questions.length <= 0) {
-  //         setTrivia([]);
-  //         setTotalQuestions(0);
-  //         setAnsweredQuestions(0);
-  //         setScore(0);
-  //       } else {
-  //         setTrivia(questions);
-  //         setTotalQuestions(questions.length);
-  //         setAnsweredQuestions(0); // Reset answered questions count
-  //         setCurrentQuestionIndex(0); // Reset question index
-  //         setScore(0);
-  //       }
-  //       setLoading(false);
-  //     } catch (error) {
-  //       handleCatchError(error as Error);
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   getTriviaQuestions();
-  // }, [selectedCategory, handleCatchError]);
 
   useEffect(() => {
     if (selectedCategory === null) return;
