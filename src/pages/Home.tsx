@@ -86,7 +86,7 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
       setLoading(true);
       try {
         const questions = await fetchTriviaQuestions(selectedCategory, 20); // Request up to 20 questions
-    
+
         // If the returned questions are fewer than 20, handle it gracefully
         if (!questions || questions.length === 0) {
           setTrivia([]);
@@ -107,7 +107,7 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
         setLoading(false);
       }
     };
-    
+
 
     getTriviaQuestions();
   }, [selectedCategory, handleCatchError]);
@@ -193,7 +193,7 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
         <div>
           {/* Display the current trivia question card */}
           <TriviaCard
-            question={decodeHtml(currentQuestion!.question)}
+            question={`${currentQuestionIndex + 1}. ${decodeHtml(currentQuestion!.question)}`}
             options={[...currentQuestion!.incorrect_answers, currentQuestion!.correct_answer]
               .map(decodeHtml)
               .sort()}
@@ -202,9 +202,6 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
             correctAnswer={decodeHtml(currentQuestion!.correct_answer)}
             disabled={isAnswered}
           />
-
-          {/* Show feedback */}
-          {/* {feedback && <p className="mt-4 text-lg font-bold">{feedback}</p>} */}
 
           {/* Show the "Next Question" button if more questions are left */}
           {isAnswered && currentQuestionIndex < totalQuestions - 1 && (
@@ -223,8 +220,8 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
         </div>
       ) : (
         <p className="uppercase font-bold mt-4">{feedback || "No questions available. Choose a category first."}</p>
-)}
-    
+      )}
+
     </div>
   );
 };
