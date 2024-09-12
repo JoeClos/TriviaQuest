@@ -29,7 +29,7 @@ const TriviaCard: React.FC<TriviaCardProps> = ({
 
   return (
     <div className="bg-white p-4 rounded shadow-md">
-      <h2 className="text-xl font-bold mb-4 break-words">{question}</h2>
+      <h2 className="text-xl font-bold mb-4 break-words text-balance">{question}</h2>
       <div className="space-y-2">
         {options.map((option, index) => {
           const isCorrect = option === correctAnswer;

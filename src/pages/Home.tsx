@@ -4,6 +4,10 @@ import CategoryDropdown from '../components/CategoryDropdown';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { Category } from '../types/category';
 import { fetchCategories, fetchTriviaQuestions } from '../api/triviaApi';
+import useSound from '../hooks/useSound';
+import { IoVolumeMute } from "react-icons/io5";
+import { VscUnmute } from 'react-icons/vsc'
+
 
 interface TriviaQuestion {
   category: string;
@@ -25,6 +29,11 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
   const [totalQuestions, setTotalQuestions] = useState<number>(0);
   const [answeredQuestions, setAnsweredQuestions] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
+  const [isMuted, setIsMuted] = useState<boolean>(false);
+
+  // Load sounds
+  const playCorrectSound = useSound('/sounds/correct.mp3', isMuted);
+  const playIncorrectSound = useSound('/sounds/incorrect.mp3', isMuted);
 
   // Fetch categories
   useEffect(() => {
@@ -82,9 +91,11 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
       const correctAnswer = decodeHtml(currentQuestion.correct_answer);
       if (answer === correctAnswer) {
         setFeedback('Correct! 🎉');
+        playCorrectSound();
         setScore(prevScore => prevScore + 1);
       } else {
         setFeedback(`Wrong! The correct answer is: ${correctAnswer}`);
+        playIncorrectSound();
       }
       setIsAnswered(true);
       setAnsweredQuestions(prevCount => prevCount + 1);
@@ -97,11 +108,15 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
     setCurrentQuestionIndex(prevIndex => prevIndex + 1);
   };
 
+  const toggleMute = () => {
+    setIsMuted(prevState => !prevState);  // Toggle the mute state
+  };
+
   const currentQuestion = trivia[currentQuestionIndex] || null;
 
   return (
     <div>
-      <div className="container mx-auto p-4 flex flex-col items-center justify-center">
+      <div className="container mx-auto p-4 flex flex-col items-center justify-center gap-3">
         {/* Category Dropdown */}
         <CategoryDropdown
           categories={categories}
@@ -120,10 +135,21 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
 
         {/* Score Display */}
         {selectedCategory && (
-          <div className="mb-4 text-white">
-            <p>Score: {score}/{totalQuestions}</p>
+          <div className="bg-white p-4 rounded shadow-md flex flex-row items-center justify-center">
+            <div className="mb-4">
+              <p>Score: {score}/{totalQuestions}</p>
+            </div>
+
+            {/* Mute/Unmute Button */}
+            <button
+              className="mb-4 px-4 py-2 text-2xl"
+              onClick={toggleMute}
+            >
+              {isMuted ? <IoVolumeMute /> : <VscUnmute />  }
+            </button>
           </div>
         )}
+
         {/* Trivia Questions */}
         {loading ? (
           <LoadingSpinner />
@@ -150,10 +176,10 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
               )}
             </div>
           ) : (
-            <p className='text-white'>There are no more questions for the category selected.</p>
+            <p className='uppercase font-bold'>There are no more questions for the category selected.</p>
           )
         ) : (
-          <p className='text-white'>No questions available. Choose first a category.</p>
+          <p className="uppercase font-bold">No questions available. Choose first a category.</p>
         )}
       </div>
     </div>

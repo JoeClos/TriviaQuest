@@ -10,15 +10,7 @@ body {
   justify-content: center;
   min-width: 320px;
   min-height: 100vh;
-  background-image: url('/assets/skyBg.jpg');
+  background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url('/assets/bg-photo.png') no-repeat center center fixed;
   background-size: cover;
   background-position: center;
 }
-
-/* src/index.css or a specific CSS module */
-/* .bg-custom {
-  background-image: url('/assets/bg.jpg');
-  background-size: cover;
-  background-position: center;
-} */
- 
