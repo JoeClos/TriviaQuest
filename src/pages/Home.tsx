@@ -134,16 +134,18 @@ const Home: React.FC<{ handleCatchError: (error: Error) => void }> = ({ handleCa
         {/* Score Display */}
         {selectedCategory && (
           <div className=" mb-4 bg-white rounded shadow-md flex flex-row items-center justify-around ">
-            <div className="mb-4">
+            <div className='m-4'>
               <p>Score: {score}/{totalQuestions}</p>
             </div>
             {/* Mute/Unmute Button */}
-            <button
-              className="mb-4 px-4 py-2 text-2xl"
-              onClick={toggleMute}
-            >
-              {isMuted ? <IoVolumeMute /> : <VscUnmute />}
-            </button>
+            <div>
+              <button
+                className=" px-4 py-2 text-2xl"
+                onClick={toggleMute}
+              >
+                {isMuted ? <IoVolumeMute /> : <VscUnmute />}
+              </button>
+            </div>
           </div>
         )}
         {/* Trivia Questions */}
